@@ -1,0 +1,18 @@
+name: rubocop-updater
+description: Update RuboCop and regenerate `.rubocop_todo.yml` to exclude all newly added offense cops and create Pull Request.
+inputs:
+  base_branch:
+    description: Pull request base branch.
+    required: false
+    default: main
+runs:
+  using: composite
+  steps:
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        ruby-version: 3.1
+    - uses: actions/checkout@v3
+branding:
+  color: red
+  icon: git-pull-request
