@@ -12,10 +12,10 @@ inputs:
     description: RuboCop (or extension) to be updated.
     required: false
     default: rubocop
-  bundler_options:
-    description: Bundler command line options for update.
+  conservative_update:
+    description: Is conservative update?
     required: false
-    default: ""
+    default: "true"
   rubocop_options:
     description: RuboCop client command line options for --auto-gen-config.
     required: false
@@ -45,9 +45,9 @@ runs:
       shell: bash
     - name: Update target RuboCop (extension) to be updated.
       run: |
-        bundle update ${{ inputs.bundler_options }} ${{ inputs.update_target }}
+        bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}
         git add .
-        git commit -m "bundle update ${{ inputs.bundler_options }} ${{ inputs.update_target }}"
+        git commit -m "bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}"
       shell: bash
     - name: Regenerate `.rubocop_todo.yml` to enforce the suppression of the newly added Cop after the update.
       continue-on-error: true
