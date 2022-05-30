@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.0 - 2022-05-31
+
 ### Changed
 - Update to add inputs to change behavior.
 - Update actions are outlined and the name of each step was clarified.
