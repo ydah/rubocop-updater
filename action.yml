@@ -2,15 +2,15 @@ name: rubocop-updater
 description: Update RuboCop and regenerate `.rubocop_todo.yml` to exclude all newly added offense cops and create Pull Request.
 inputs:
   label:
-    description: Pull request label name.
+    description: Name of the label to be given to the pull request.
     required: false
     default: ""
   base_branch:
-    description: Pull request base branch.
+    description: Name of the branch on which the pull request will be based.
     required: false
     default: main
   update_target:
-    description: Update target.
+    description: Name of the RuboCop (or extension) to be updated.
     required: false
     default: rubocop
 runs:
@@ -21,34 +21,34 @@ runs:
         bundler-cache: true
         ruby-version: 3.1
     - uses: actions/checkout@v3
-    - name: prepare tasks
+    - name: Preparations to be made before executing an action
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git switch --create update-${{ inputs.update_target }}-${{ github.run_number }}
         bundle install
       shell: bash
-    - name: prepare regenerate `.rubocop_todo.yml`
+    - name: Regenerate `.rubocop_todo.yml` once at this point. (for easier to see the differences due to updates)
       continue-on-error: true
       run: |
         bundle exec rubocop --auto-gen-config --exclude-limit=99999 --no-offense-counts --no-auto-gen-timestamp
         git add .
         git commit -m "rubocop --auto-gen-config --exclude-limit=99999 --no-offense-counts --no-auto-gen-timestamp"
       shell: bash
-    - name: update target
+    - name: Update target RuboCop (extension) to be updated.
       run: |
         bundle update --conservative ${{ inputs.update_target }}
         git add .
         git commit -m "bundle update --conservative ${{ inputs.update_target }}"
       shell: bash
-    - name: regenerate `.rubocop_todo.yml`
+    - name: Regenerate `.rubocop_todo.yml` to enforce the suppression of the newly added Cop after the update.
       continue-on-error: true
       run: |
         bundle exec rubocop --auto-gen-config --exclude-limit=99999 --no-offense-counts --no-auto-gen-timestamp
         git add .
         git commit -m "rubocop --auto-gen-config --exclude-limit=99999 --no-offense-counts --no-auto-gen-timestamp"
       shell: bash
-    - name: push
+    - name: Push the changes.
       run: git push --set-upstream origin update-${{ inputs.update_target }}-${{ github.run_number }}
       shell: bash
     - name: gh pr create
