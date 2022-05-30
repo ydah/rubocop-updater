@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.0 - 2022-05-30
+
 ### Added
 - Add update steps
 
