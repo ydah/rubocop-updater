@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.0 - 2022-05-31
+
 ### Changed
 - Update PR title and body.
 - Add step for update target RuboCop (extension) to be updated for another Gemfile.
