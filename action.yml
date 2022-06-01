@@ -28,29 +28,34 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: actions/checkout@v3
+    - name: Detect ruby version
+      id: ruby-version
+      run: echo "::set-output name=version::$(cat .ruby-version)"
+      shell: bash
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: 3.1
-    - uses: actions/checkout@v3
+        ruby-version: ${{ steps.ruby.outputs.version }}
     - name: Preparations to be made before executing an action
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git switch --create update-${{ inputs.update_target }}-${{ github.run_number }}
+        bundle config unset deployment
         bundle install
       shell: bash
     - name: Regenerate `.rubocop_todo.yml` once at this point. (for easier to see the differences due to updates)
       continue-on-error: true
       run: |
         bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}
-        git add .
+        git add -u
         git commit -m "rubocop --auto-gen-config ${{ inputs.rubocop_options }}"
       shell: bash
     - name: Update target RuboCop (extension) to be updated.
       run: |
         bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}
-        git add .
+        git add -u
         git commit -m "bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}"
       shell: bash
     - name: Update target RuboCop (extension) to be updated for another Gemfile.
@@ -58,14 +63,14 @@ runs:
       run: |
         export BUNDLE_GEMFILE="${{ inputs.another_gemfile }}"
         bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}
-        git add .
+        git add -u
         git commit -m "bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }} for ${{ inputs.another_gemfile }}"
       shell: bash
     - name: Regenerate `.rubocop_todo.yml` to enforce the suppression of the newly added Cop after the update.
       continue-on-error: true
       run: |
         bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}
-        git add .
+        git add -u
         git commit -m "rubocop --auto-gen-config ${{ inputs.rubocop_options }}"
       shell: bash
     - name: Push changes

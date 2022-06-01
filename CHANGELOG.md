@@ -5,6 +5,9 @@
 ## 0.4.0 - 2022-05-31
 
 ### Changed
+- Change to get Ruby version from `.ruby-version`.
+
+### Changed
 - Update PR title and body.
 - Add step for update target RuboCop (extension) to be updated for another Gemfile.
 
