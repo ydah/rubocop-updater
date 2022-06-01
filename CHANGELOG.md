@@ -2,10 +2,12 @@
 
 ## Unreleased
 
-## 0.4.0 - 2022-05-31
+## 0.5.0 - 2022-06-01
 
 ### Changed
 - Change to get Ruby version from `.ruby-version`.
+
+## 0.4.0 - 2022-05-31
 
 ### Changed
 - Update PR title and body.
