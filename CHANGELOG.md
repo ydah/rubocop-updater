@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.1 - 2022-06-03
+
 ### Changed
 - Use `bundle config set --local without`.
 
