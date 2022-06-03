@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.1 - 2022-06-03
+
 ### Changed
 - Add without setting for bundle install steps.
 
