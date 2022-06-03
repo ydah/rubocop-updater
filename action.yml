@@ -8,6 +8,10 @@ inputs:
     description: Label to be given to the pull request.
     required: false
     default: ""
+  mode:
+    description: Switching modes of operation.
+    required: false
+    default: "normal"
   update_target:
     description: RuboCop (or extension) to be updated.
     required: false
@@ -49,6 +53,7 @@ runs:
         bundle install --without "${{ steps.groups.outputs.ignore_groups }}"
       shell: bash
     - name: regenerate `.rubocop_todo.yml` once at this point. (for easier to see the differences due to updates)
+      if: ${{ inputs.mode }} != "quickly"
       continue-on-error: true
       run: |
         bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}

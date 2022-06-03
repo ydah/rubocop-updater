@@ -47,6 +47,13 @@ gh workflow run rubocop-updater
 - Label to be given to the pull request.
 - default: `""` (empty string means no-label)
 
+### `mode`
+
+- Switching modes of operation.
+  - normal
+  - quickly (Do not regenerate `.rubocop_todo.yml` to make it easier to see differences due to version changes)
+- default: `normal`
+
 ### `update_target`
 
 - RuboCop (or extension) to be updated.
@@ -65,6 +72,6 @@ gh workflow run rubocop-updater
 
 ### `another_gemfile`
 
-- Gemfile to be updated at the same time
+- Gemfile to be updated at the same time.
   - For example, if multiple Gemfiles are managed, the specified Gemfile is also updated together.
 - default: `""` (empty string means only update Gemfile)
