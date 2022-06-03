@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.0 - 2022-06-03
+
 ### Added
 - Add mode inputs.
 
