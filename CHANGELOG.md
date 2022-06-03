@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.2 - 2022-06-04
+
 ### Fixed
 - Fixed a RuboCop updates would include changes to other gems when using different Ruby versions.
 
