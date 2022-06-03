@@ -21,7 +21,7 @@ inputs:
     required: false
     default: ""
   another_gemfile:
-    description: Gemfile to be updated at the same time
+    description: Gemfile to be updated at the same time.
     required: false
     default: ""
 
@@ -41,27 +41,27 @@ runs:
         ignore_groups=$(gemfile_parser groups ${{ inputs.update_target }} --ignore --delimiter=: )
         echo "::set-output name=ignore_groups::${ignore_groups}"
       shell: bash
-    - name: Preparations to be made before executing an action
+    - name: preparations to be made before executing an action
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git switch --create update-${{ inputs.update_target }}-${{ github.run_number }}
         bundle install --without "${{ steps.groups.outputs.ignore_groups }}"
       shell: bash
-    - name: Regenerate `.rubocop_todo.yml` once at this point. (for easier to see the differences due to updates)
+    - name: regenerate `.rubocop_todo.yml` once at this point. (for easier to see the differences due to updates)
       continue-on-error: true
       run: |
         bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}
         git add -u
         git commit -m "rubocop --auto-gen-config ${{ inputs.rubocop_options }}"
       shell: bash
-    - name: Update target RuboCop (extension) to be updated.
+    - name: update target RuboCop (extension) to be updated.
       run: |
         bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}
         git add -u
         git commit -m "bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}"
       shell: bash
-    - name: Update target RuboCop (extension) to be updated for another Gemfile.
+    - name: update target RuboCop (extension) to be updated for another Gemfile.
       if: ${{ inputs.another_gemfile }} != ""
       run: |
         export BUNDLE_GEMFILE="${{ inputs.another_gemfile }}"
@@ -69,14 +69,14 @@ runs:
         git add -u
         git commit -m "bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }} for ${{ inputs.another_gemfile }}"
       shell: bash
-    - name: Regenerate `.rubocop_todo.yml` to enforce the suppression of the newly added Cop after the update.
+    - name: regenerate `.rubocop_todo.yml` to enforce the suppression of the newly added Cop after the update.
       continue-on-error: true
       run: |
         bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}
         git add -u
         git commit -m "rubocop --auto-gen-config ${{ inputs.rubocop_options }}"
       shell: bash
-    - name: Push changes
+    - name: push changes
       run: git push --set-upstream origin update-${{ inputs.update_target }}-${{ github.run_number }}
       shell: bash
     - name: gh pr create

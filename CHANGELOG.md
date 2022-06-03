@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- Unification of detailed expressions was implemented.
+
 ## 0.5.1 - 2022-06-03
 
 ### Changed
