@@ -28,22 +28,25 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v3
-    - name: Detect ruby version
-      id: ruby-version
-      run: echo "::set-output name=version::$(cat .ruby-version)"
-      shell: bash
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: ${{ steps.ruby.outputs.version }}
+        ruby-version: 3.1
+    - uses: actions/checkout@v3
+    - run: gem install --no-document gemfile_parser:0.1.0
+      shell: bash
+    - name: gemfile_parser groups
+      id: groups
+      run: |
+        ignore_groups=$(gemfile_parser groups ${{ inputs.update_target }} --ignore --delimiter=: )
+        echo "::set-output name=ignore_groups::${ignore_groups}"
+      shell: bash
     - name: Preparations to be made before executing an action
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git switch --create update-${{ inputs.update_target }}-${{ github.run_number }}
-        bundle config unset deployment
-        bundle install
+        bundle install --without "${{ steps.groups.outputs.ignore_groups }}"
       shell: bash
     - name: Regenerate `.rubocop_todo.yml` once at this point. (for easier to see the differences due to updates)
       continue-on-error: true
