@@ -4,7 +4,21 @@
 to update [RuboCop](https://github.com/rubocop/rubocop) and regenerate `.rubocop_todo.yml`
 to exclude all newly added offense cops and create Pull Request.
 
-## How to operate
+If you are developing a Rails project, such as those listed below, we may be able to help you.
+
+* [x] It's a reasonably large Rails project
+* [x] [Enabling pending Cops in bulk](https://docs.rubocop.org/rubocop/versioning.html#enablingdisabling-pending-cops-in-bulk)
+* [x] Many todo's remain in `.rubocop_todo.yml`.
+
+This updater provides you with the automation of creating a PR for your upgrade that is secure and easy to see the differences.
+
+Create a PR by creating a commit as follows:
+
+* bundle exec rubocop --auto-gen-config (for once you have `.rubocop_todo.yml` cleanup)
+* bundle update --conservative rubocop
+* bundle exec rubocop --auto-gen-config
+
+## How it works?
 
 ![](img/actions.png)
 
