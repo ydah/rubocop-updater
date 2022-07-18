@@ -60,17 +60,11 @@ runs:
       shell: bash
     - name: update target RuboCop (extension) to be updated.
       run: |
-        bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}
+        for gemfile in $(ls Gemfile* | grep -v .lock); do
+          BUNDLE_GEMFILE="${gemfile}" bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}
+        done
         git add -u
         git commit -m "bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}"
-      shell: bash
-    - name: update target RuboCop (extension) to be updated for another Gemfile.
-      if: ${{ inputs.another_gemfile }} != ""
-      run: |
-        export BUNDLE_GEMFILE="${{ inputs.another_gemfile }}"
-        bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}
-        git add -u
-        git commit -m "bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }} for ${{ inputs.another_gemfile }}"
       shell: bash
     - name: regenerate `.rubocop_todo.yml` to enforce the suppression of the newly added Cop after the update.
       continue-on-error: true

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- Remove `another_gemfile` option.
+
 ## 0.6.2 - 2022-06-04
 
 ### Fixed
