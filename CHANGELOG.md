@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.0 - 2022-07-19
+
 ### Changed
 - Remove `another_gemfile` option.
 
