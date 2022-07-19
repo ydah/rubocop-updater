@@ -83,9 +83,3 @@ gh workflow run rubocop-updater
 
 - RuboCop client command line options for --auto-gen-config.
 - default: `""`
-
-### `another_gemfile`
-
-- Gemfile to be updated at the same time.
-  - For example, if multiple Gemfiles are managed, the specified Gemfile is also updated together.
-- default: `""` (empty string means only update Gemfile)
