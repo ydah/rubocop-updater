@@ -34,20 +34,11 @@ runs:
   steps:
     - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
-    - run: gem install --no-document gemfile_parser:0.1.0
-      shell: bash
-    - name: gemfile_parser groups
-      id: groups
-      run: |
-        ignore_groups=$(gemfile_parser groups ${{ inputs.update_target }} --ignore --delimiter=: )
-        echo "::set-output name=ignore_groups::${ignore_groups}"
-      shell: bash
     - name: preparations to be made before executing an action
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git switch --create update-${{ inputs.update_target }}-${{ github.run_number }}
-        bundle config set --local without "${{ steps.groups.outputs.ignore_groups }}"
         bundle install
       shell: bash
     - name: regenerate `.rubocop_todo.yml` once at this point. (for easier to see the differences due to updates)
