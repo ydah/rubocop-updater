@@ -24,10 +24,6 @@ inputs:
     description: RuboCop client command line options for --auto-gen-config.
     required: false
     default: ""
-  another_gemfile:
-    description: Gemfile to be updated at the same time.
-    required: false
-    default: ""
 
 runs:
   using: composite
