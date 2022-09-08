@@ -29,6 +29,8 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@v3
+      with:
+        ref: "${{ github.event.pull_request.base.ref }}"
     - uses: ruby/setup-ruby@v1
     - name: preparations to be made before executing an action
       run: |
