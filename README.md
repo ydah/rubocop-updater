@@ -6,17 +6,17 @@ to exclude all newly added offense cops and create Pull Request.
 
 If you are developing a Rails project, such as those listed below, we may be able to help you.
 
-* [x] It's a reasonably large Rails project
-* [x] [Enabling pending Cops in bulk](https://docs.rubocop.org/rubocop/versioning.html#enablingdisabling-pending-cops-in-bulk)
-* [x] Many todo's remain in `.rubocop_todo.yml`.
+- [x] It's a reasonably large Rails project
+- [x] [Enabling pending Cops in bulk](https://docs.rubocop.org/rubocop/versioning.html#enablingdisabling-pending-cops-in-bulk)
+- [x] Many todo's remain in `.rubocop_todo.yml`.
 
 This updater provides you with the automation of creating a PR for your upgrade that is secure and easy to see the differences.
 
 Create a PR by creating a commit as follows:
 
-* bundle exec rubocop --auto-gen-config (for once you have `.rubocop_todo.yml` cleanup)
-* bundle update --conservative rubocop
-* bundle exec rubocop --auto-gen-config
+- bundle exec rubocop --auto-gen-config (for once you have `.rubocop_todo.yml` cleanup)
+- bundle update --conservative rubocop
+- bundle exec rubocop --auto-gen-config
 
 ## How it works?
 
@@ -53,7 +53,7 @@ gh workflow run rubocop-updater
 ### `github_token`
 
 - GitHub access token to run another workflows from new pull request.
-    - Don't forget to add `workflow` scope to this token
+  - Don't forget to add `workflow` scope to this token
 - optional
 
 ### `label`
@@ -76,7 +76,7 @@ gh workflow run rubocop-updater
 ### `conservative_update`
 
 - If this option is `true`, then bundle update is performed as follows.
-    - `bundle update --conservative ${update_target}`
+  - `bundle update --conservative ${update_target}`
 - default: `true`
 
 ### `rubocop_options`
