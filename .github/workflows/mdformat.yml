@@ -2,7 +2,7 @@ name: Mdformat
 on:
   - pull_request
 jobs:
-  yamllint:
+  mdformat:
     name: Mdformat
     runs-on: ubuntu-latest
     steps:
