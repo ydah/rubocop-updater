@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Add `preparation_command` option.
+
 ## 0.7.0 - 2022-07-19
 
 ### Changed

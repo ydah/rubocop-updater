@@ -28,6 +28,10 @@ inputs:
     description: RuboCop client command line options for --auto-gen-config.
     required: false
     default: ""
+  preparation_command:
+    description: Preparation commands to be plugged in after the repository is checked out and Ruby is set up.
+    required: false
+    default: ""
 runs:
   using: composite
   steps:
@@ -42,6 +46,10 @@ runs:
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git switch --create update-${{ inputs.update_target }}-${{ github.run_number }}
+      shell: bash
+    - name: Run preparation command
+      run: ${{ inputs.preparation_command }}
+      if: inputs.preparation_command != ""
       shell: bash
     - name: Regenerate `.rubocop_todo.yml`
       run: |

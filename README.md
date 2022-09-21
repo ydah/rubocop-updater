@@ -83,3 +83,9 @@ gh workflow run rubocop-updater
 
 - RuboCop client command line options for --auto-gen-config.
 - default: `""`
+
+### `preparation_command`
+
+- Specify the label to be triggered.
+- default: `""` (empty string means no op)
+- optional
