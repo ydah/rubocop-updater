@@ -6,6 +6,10 @@
 
 - Add `preparation_command` option.
 
+### Changed
+
+- Always `--regenerate-todo` and remove the `rubocop_options` option.
+
 ## 0.7.0 - 2022-07-19
 
 ### Changed

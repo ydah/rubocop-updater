@@ -79,11 +79,6 @@ gh workflow run rubocop-updater
   - `bundle update --conservative ${update_target}`
 - default: `true`
 
-### `rubocop_options`
-
-- RuboCop client command line options for --auto-gen-config.
-- default: `""`
-
 ### `preparation_command`
 
 - Specify the label to be triggered.

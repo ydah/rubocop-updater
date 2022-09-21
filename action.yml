@@ -24,10 +24,6 @@ inputs:
     description: Is conservative update?
     required: false
     default: "true"
-  rubocop_options:
-    description: RuboCop client command line options for --auto-gen-config.
-    required: false
-    default: ""
   preparation_command:
     description: Preparation commands to be plugged in after the repository is checked out and Ruby is set up.
     required: false
@@ -54,9 +50,9 @@ runs:
       shell: bash
     - name: Regenerate `.rubocop_todo.yml`
       run: |
-        bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}
+        bundle exec rubocop --regenerate-todo
         git add -u
-        git commit -m "rubocop --auto-gen-config ${{ inputs.rubocop_options }}"
+        git commit -m "rubocop --regenerate-todo"
       if: ${{ inputs.mode }} != "quickly"
       continue-on-error: true
       shell: bash
@@ -70,9 +66,9 @@ runs:
       shell: bash
     - name: Regenerate `.rubocop_todo.yml`
       run: |
-        bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}
+        bundle exec rubocop --regenerate-todo
         git add -u
-        git commit -m "rubocop --auto-gen-config ${{ inputs.rubocop_options }}"
+        git commit -m "rubocop --regenerate-todo"
       continue-on-error: true
       shell: bash
     - name: Create pull request
