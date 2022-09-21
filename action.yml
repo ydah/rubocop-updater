@@ -1,5 +1,9 @@
 name: rubocop-updater
+author: ydah <t.yudai92@gmail.com>
 description: Update RuboCop and regenerate `.rubocop_todo.yml` to exclude all newly added offense cops and create Pull Request.
+branding:
+  color: red
+  icon: git-pull-request
 inputs:
   github_token:
     description: GitHub access token to run another workflows from new pull request.
@@ -24,29 +28,30 @@ inputs:
     description: RuboCop client command line options for --auto-gen-config.
     required: false
     default: ""
-
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v3
+    - name: Checking out repository
+      uses: actions/checkout@v3
       with:
         ref: "${{ github.event.pull_request.base.ref }}"
-    - uses: ruby/setup-ruby@v1
-    - name: preparations to be made before executing an action
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+    - name: Setup git
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git switch --create update-${{ inputs.update_target }}-${{ github.run_number }}
       shell: bash
-    - name: regenerate `.rubocop_todo.yml` once at this point. (for easier to see the differences due to updates)
-      if: ${{ inputs.mode }} != "quickly"
-      continue-on-error: true
+    - name: Regenerate `.rubocop_todo.yml`
       run: |
         bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}
         git add -u
         git commit -m "rubocop --auto-gen-config ${{ inputs.rubocop_options }}"
+      if: ${{ inputs.mode }} != "quickly"
+      continue-on-error: true
       shell: bash
-    - name: update target RuboCop (extension) to be updated.
+    - name: Update RuboCop (extension)
       run: |
         for gemfile in $(ls Gemfile* | grep -v .lock); do
           BUNDLE_GEMFILE="${gemfile}" bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}
@@ -54,14 +59,14 @@ runs:
         git add -u
         git commit -m "bundle update ${{ inputs.conservative_update == 'true' && '--conservative' || '' }} ${{ inputs.update_target }}"
       shell: bash
-    - name: regenerate `.rubocop_todo.yml` to enforce the suppression of the newly added Cop after the update.
-      continue-on-error: true
+    - name: Regenerate `.rubocop_todo.yml`
       run: |
         bundle exec rubocop --auto-gen-config ${{ inputs.rubocop_options }}
         git add -u
         git commit -m "rubocop --auto-gen-config ${{ inputs.rubocop_options }}"
+      continue-on-error: true
       shell: bash
-    - name: push changes and gh pr create
+    - name: Create pull request
       run: |
         git push --set-upstream origin update-${{ inputs.update_target }}-${{ github.run_number }}
         version=`bundle info ${{ inputs.update_target }} | grep -m 1 -o "[0-9]*\.[0-9]*\.[0-9]*"`
@@ -79,6 +84,3 @@ runs:
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github_token || github.token }}
-branding:
-  color: red
-  icon: git-pull-request
