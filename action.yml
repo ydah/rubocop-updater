@@ -41,15 +41,16 @@ runs:
         ref: "${{ github.event.pull_request.base.ref }}"
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
-    - name: Setup git
+    - name: Run preparation command
+      run: ${{ inputs.preparation_command }}
+      if: inputs.preparation_command != ""
+      shell: bash
+    - name: Setup git & bundler
       run: |
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git switch --create update-${{ inputs.update_target }}-${{ github.run_number }}
-      shell: bash
-    - name: Run preparation command
-      run: ${{ inputs.preparation_command }}
-      if: inputs.preparation_command != ""
+        bundle install
       shell: bash
     - name: Regenerate `.rubocop_todo.yml`
       run: |
