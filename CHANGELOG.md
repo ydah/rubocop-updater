@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.8.0 - 2022-09-21
+
 ### Added
 
 - Add `preparation_command` option.
