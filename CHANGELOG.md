@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Fix an unexpected symbol for preparation command.
+- Remove unnecessary `env` and revert to `bundle install`.
 
 ## 0.9.0 - 2022-09-22
 
