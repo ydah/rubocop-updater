@@ -39,7 +39,7 @@ runs:
       uses: ruby/setup-ruby@v1
     - name: Run preparation command
       run: ${{ inputs.preparation_command }}
-      if: inputs.preparation_command != ""
+      if: ${{ inputs.preparation_command }} != ""
       shell: bash
     - name: Setup git & bundler
       run: |

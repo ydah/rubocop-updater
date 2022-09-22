@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix an unexpected symbol for preparation command.
+
 ## 0.9.0 - 2022-09-22
 
 ### Changed
