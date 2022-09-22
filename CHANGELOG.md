@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.9.0 - 2022-09-22
+
 ### Changed
 
 - Change `bundle install` to `env bundle install`.
